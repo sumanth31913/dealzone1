@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>DealZone - Daily Offers Hub</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gradient-to-br from-orange-50 to-white text-gray-800 font-sans">
+
+  <!-- 🌟 Hero Section -->
+  <section class="bg-orange-500 text-white py-10 px-6 text-center">
+    <h1 class="text-4xl font-bold mb-3">Welcome to DealZone</h1>
+    <p class="text-lg">Best Daily Deals from Amazon, Flipkart, Meesho & Myntra – All in One Place!</p>
+    <a href="#deals" class="mt-4 inline-block bg-white text-orange-600 px-6 py-3 rounded-full font-semibold shadow-md hover:bg-orange-100 transition">Browse Top Deals</a>
+  </section>
+
+  <!-- 🔍 Search + Categories -->
+  <div class="flex flex-wrap items-center justify-between px-6 py-4 gap-4">
+    <input id="searchInput" type="text" placeholder="Search deals..." class="flex-1 border px-4 py-2 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-orange-400" />
+    <div class="flex flex-wrap gap-2">
+      <button onclick="filterDeals('All')" class="bg-orange-100 hover:bg-orange-200 px-4 py-2 rounded-full text-sm font-medium">All</button>
+      <button onclick="filterDeals('Electronics')" class="bg-orange-100 hover:bg-orange-200 px-4 py-2 rounded-full text-sm font-medium">Electronics</button>
+      <button onclick="filterDeals('Fashion')" class="bg-orange-100 hover:bg-orange-200 px-4 py-2 rounded-full text-sm font-medium">Fashion</button>
+      <button onclick="filterDeals('Home')" class="bg-orange-100 hover:bg-orange-200 px-4 py-2 rounded-full text-sm font-medium">Home</button>
+      <button onclick="filterDeals('Beauty')" class="bg-orange-100 hover:bg-orange-200 px-4 py-2 rounded-full text-sm font-medium">Beauty</button>
+    </div>
+  </div>
+
+  <!-- 💥 Deals Grid -->
+  <section id="deals" class="px-6 py-6 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+    <!-- Cards will be injected here -->
+  </section>
+
+  <!-- 🔚 Footer -->
+  <footer class="text-center text-gray-500 p-4">
+    &copy; 2025 DealZone | Built for Smart Shoppers 🛍️
+  </footer>
+
+  <!-- 💻 JavaScript for Deals -->
+  <script>
+    const dealsContainer = document.getElementById("deals");
+    const searchInput = document.getElementById("searchInput");
+
+    const dealsData = [
+      {
+        "title": "Women’s Designer Kurti",
+        "price": 499,
+        "original_price": 899,
+        "platform": "Meesho",
+        "image_url": "https://images.meesho.com/images/products/191404431/xwihm_512.webp",
+        "deal_url": "https://www.meesho.com/...",
+        "category": "Fashion"
+      },
+      {
+        "title": "Portable Bluetooth Speaker",
+        "price": 1099,
+        "original_price": 1999,
+        "platform": "Flipkart",
+        "image_url": "https://rukminim2.flixcart.com/image/416/416/xif0q/speaker/mobile-tablet-speaker/o/k/d/srs-xb100-sony-original-imagr5h6bhgqjdxg.jpeg",
+        "deal_url": "https://www.flipkart.com/...",
+        "category": "Electronics"
+      },
+      {
+        "title": "Smart LED TV 32 inch",
+        "price": 9999,
+        "original_price": 14999,
+        "platform": "Amazon",
+        "image_url": "https://m.media-amazon.com/images/I/817fZ7P3FHL._SX522_.jpg",
+        "deal_url": "https://www.amazon.in/...",
+        "category": "Electronics"
+      },
+      {
+        "title": "Natural Skin Care Kit",
+        "price": 699,
+        "original_price": 1299,
+        "platform": "Myntra",
+        "image_url": "https://images-static.nykaa.com/media/catalog/product/2/4/249246e8901030755829_1.jpg",
+        "deal_url": "https://www.myntra.com/...",
+        "category": "Beauty"
+      },
+      {
+        "title": "Wireless Earbuds",
+        "price": 1599,
+        "original_price": 2499,
+        "platform": "Flipkart",
+        "image_url": "https://rukminim2.flixcart.com/image/832/832/xif0q/headphone/x/4/f/-original-imagrzjfvgc8gkfh.jpeg",
+        "deal_url": "https://www.flipkart.com/...",
+        "category": "Electronics"
+      },
+      {
+        "title": "Men’s Casual Sneakers",
+        "price": 999,
+        "original_price": 1799,
+        "platform": "Amazon",
+        "image_url": "https://m.media-amazon.com/images/I/71Y1NVB3NIL._SY695_.jpg",
+        "deal_url": "https://www.amazon.in/...",
+        "category": "Fashion"
+      },
+      {
+        "title": "Stainless Steel Pressure Cooker",
+        "price": 1299,
+        "original_price": 2299,
+        "platform": "Meesho",
+        "image_url": "https://images.meesho.com/images/products/234234200/vjlcf_512.webp",
+        "deal_url": "https://www.meesho.com/...",
+        "category": "Home"
+      },
+      {
+        "title": "Women’s Stylish Handbag",
+        "price": 799,
+        "original_price": 1399,
+        "platform": "Myntra",
+        "image_url": "https://assets.ajio.com/medias/sys_master/root/20230621/oLsh/6492b9e3a9b42d15c9a8030d/-473Wx593H-465336612-black-MODEL.jpg",
+        "deal_url": "https://www.myntra.com/...",
+        "category": "Fashion"
+      }
+    ];
+
+    function renderDeals(deals) {
+      dealsContainer.innerHTML = "";
+      if (deals.length === 0) {
+        dealsContainer.innerHTML = "<p class='text-gray-500'>No deals found.</p>";
+        return;
+      }
+
+      deals.forEach(deal => {
+        const card = `
+        <div class="bg-white shadow-lg rounded-xl overflow-hidden transition hover:scale-105">
+          <img src="${deal.image_url}" alt="${deal.title}" class="h-48 w-full object-cover">
+          <div class="p-4">
+            <div class="flex justify-between items-center">
+              <h2 class="text-lg font-bold">${deal.title}</h2>
+              <span class="bg-orange-200 text-orange-800 text-xs px-2 py-1 rounded-full">${deal.platform}</span>
+            </div>
+            <div class="mt-2 flex items-center justify-between">
+              <span class="text-green-600 font-bold text-lg">₹${deal.price}</span>
+              <span class="line-through text-gray-400 text-sm">₹${deal.original_price}</span>
+            </div>
+            <a href="${deal.deal_url}" target="_blank" class="block mt-4 text-center bg-orange-500 text-white px-4 py-2 rounded hover:bg-orange-600 transition">Buy Now</a>
+          </div>
+        </div>`;
+        dealsContainer.innerHTML += card;
+      });
+    }
+
+    function filterDeals(category) {
+      const filtered = category === 'All'
+        ? dealsData
+        : dealsData.filter(deal => deal.category === category);
+      renderDeals(filtered);
+    }
+
+    searchInput.addEventListener("input", () => {
+      const keyword = searchInput.value.toLowerCase();
+      const filtered = dealsData.filter(deal =>
+        deal.title.toLowerCase().includes(keyword) ||
+        deal.platform.toLowerCase().includes(keyword)
+      );
+      renderDeals(filtered);
+    });
+
+    window.onload = () => renderDeals(dealsData);
+  </script>
+
+</body>
+</html>
